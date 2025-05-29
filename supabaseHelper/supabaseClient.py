@@ -1,18 +1,18 @@
 from supabase import create_client, Client
-from dotenv import load_dotenv
-import os
+import systemHelper as sysHelper
+
+import FileAndDirectory.file as fs
 
 # Initialize Supabase client
-load_dotenv()
-SUPABASE_URL = os.getenv("supabaseUrl")
-SUPABASE_SERVICE_KEY = os.getenv("supabase_service_key")
-SUPABASE_KEY = os.getenv('supabaseKey')
+SUPABASE_URL = sysHelper.geGetEnvValue("supabaseUrl")
+SUPABASE_SERVICE_KEY = sysHelper.GetEnvValue("supabase_service_key")
+SUPABASE_KEY = sysHelper.GetEnvValue('supabaseKey')
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
 
 
 def upload_file_to_bucket(bucket_name: str, file_path: str, storage_path: str):
-    with open(file_path, "rb") as f:
+    with fs.OpenFile(file_path, "rb") as f:
         data = f.read()
 
     response = supabase.storage.from_(bucket_name).upload(storage_path, data, {
@@ -50,3 +50,10 @@ def list_buckets():
             print('Bucket Name: ', bucket.name)
     except Exception as e:
         raise Exception('failed to list buckets {e}')
+    
+def list_folders_in_bucket(bucketName: str):
+    try:
+        buckets = supabase.storage.from_(bucketName).list('folders')
+        print(buckets)
+    except Exception as e:
+        raise Exception('failed to get folders in bucket')
