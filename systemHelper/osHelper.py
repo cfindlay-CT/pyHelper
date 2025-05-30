@@ -4,5 +4,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-def GetEnvValue(key: str):
+def getEnvValue(key: str):
+
+    if key == '':
+        return ''
+
     return os.getenv(key)

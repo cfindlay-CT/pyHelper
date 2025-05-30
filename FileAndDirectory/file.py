@@ -1,4 +1,7 @@
 import os
 
-def OpenFile(filePath: str, accessCode: str):
-    return os.open(filePath, accessCode)
+def OpenFileRead(filePath: str, fileCode: str):
+    return open(filePath, fileCode)
+
+def getBaseName(path: str):
+    return os.path.basename(path)
