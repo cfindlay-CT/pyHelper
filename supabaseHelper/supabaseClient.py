@@ -1,29 +1,33 @@
 from supabase import create_client, Client
-from dotenv import load_dotenv
-import os
+import systemHelper.osHelper as sysHelper
+
+import FileAndDirectory.file as fs
 
 # Initialize Supabase client
-load_dotenv()
-SUPABASE_URL = os.getenv("supabaseUrl")
-SUPABASE_SERVICE_KEY = os.getenv("supabase_service_key")
-SUPABASE_KEY = os.getenv('supabaseKey')
+SUPABASE_URL = sysHelper.getEnvValue("supabaseUrl")
+SUPABASE_SERVICE_KEY = sysHelper.getEnvValue("supabase_service_key")
+SUPABASE_KEY = sysHelper.getEnvValue('supabaseKey')
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
 
+def upload_folder(bucketName: str, folderName: str):
+    try:
+        res = supabase.storage.from_(bucketName).upload(folderName, b'', {'content-type': 'text/plain'})
+    except Exception as e:
+        print('Exception creating folder ', e)
 
 def upload_file_to_bucket(bucket_name: str, file_path: str, storage_path: str):
-    with open(file_path, "rb") as f:
+    with fs.OpenFileRead(file_path, 'rb') as f:
         data = f.read()
 
-    response = supabase.storage.from_(bucket_name).upload(storage_path, data, {
-        "content-type": "application/octet-stream",
-        "cache-control": "3600"
-    })
-
-    if response.get("error"):
-        raise Exception(f"Upload failed: {response['error']['message']}")
+    try:
+        response = supabase.storage.from_(bucket_name).upload(storage_path, data, {
+            "content-type": "application/octet-stream",
+            "cache-control": "3600"
+        })
+    except Exception as e:
+        print(f"Upload failed: {response}")
     
-    print("File uploaded successfully.")
     return response
 
 def create_storage_bucket(bucket_name: str, public: bool = False):
@@ -50,3 +54,10 @@ def list_buckets():
             print('Bucket Name: ', bucket.name)
     except Exception as e:
         raise Exception('failed to list buckets {e}')
+    
+def list_folders_in_bucket(bucketName: str, folder: str = ''):
+    try:
+        buckets = supabase.storage.from_(bucketName).list(folder)
+        return buckets
+    except Exception as e:
+        raise Exception('failed to get folders in bucket')

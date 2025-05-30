@@ -7,6 +7,6 @@ def list_files_by_folder(path):
         if os.path.isdir(full_path):
             contents[entry] = list_files_by_folder(full_path)
         else:
-            contents.setdefault('files', []).append(entry)
+            contents.setdefault('files', []).append(full_path)
     return contents
 
