@@ -1,0 +1,42 @@
+[
+    {
+        "name": "Current Calm Tabletop Fountain and Planter", 
+        "description": "Flowing water and fresh greenery in perfect harmony. A desk-sized oasis.",
+        "price": 25.00,
+        "category": "decor",
+        "sku": "HD-001",
+        "printType": "PLA"
+    },
+    {
+        "name": "Gardening Gnome - Snooze Planter",
+        "description": "Snooze will tend your plants for you! He is pretty helpful after his 15 daily naps. ",
+        "price": 12.00,
+        "category": "decor",
+        "sku": "HD-002",
+        "printType": "PLA"
+    },
+    {
+        "name": "Desert Mama Dragon",
+        "description": "This mama dragon might be built on sand, but as long as her baby is around, she’s here for the long run. Don’t let him out of her sight if you know what’s good for you.",
+        "price": 15.00,
+        "category": "Dragons & Beasts",
+        "sku": "DB-001",
+        "printType": "PLA"
+    },
+    {
+        "name": "Stick To The Beat",
+        "description": "A slimmy looking head phone holder. It’s a great companion for your music sessions.",
+        "price": 10.00,
+        "category": "Tech Accessories",
+        "sku": "TA-001",
+        "printType": "PLA"
+    },
+    {
+        "name": "Stretching Kitty",
+        "description": "Small cute little.",
+        "price": 8.00,
+        "category": "Animal Companions",
+        "sku": "AC-001",
+        "printType": "PLA"
+    }
+]

@@ -1,6 +1,6 @@
 from supabase import create_client, Client
 import systemHelper.osHelper as sysHelper
-
+from supabaseHelper.supbase_storage_item_listing import SupabaseFolderListing
 import FileAndDirectory.file as fs
 
 # Initialize Supabase client
@@ -61,3 +61,28 @@ def list_folders_in_bucket(bucketName: str, folder: str = ''):
         return buckets
     except Exception as e:
         raise Exception('failed to get folders in bucket')
+    
+def list_files_in_bucket(bucketName: str, folder: str = ''):
+    try:
+        filesInBucket = supabase.storage.from_(bucketName).list(folder)
+        return SupabaseFolderListing(bucketName + '/' + folder, filesInBucket)
+    except Exception as e:
+        raise Exception(f'failed to get folders in bucket {bucketName}/{folder}')
+    
+def insert_into_table(table_name: str, data: dict):
+    try:
+        supabase.table(table_name).insert(data).execute()
+        print(f'Successfully inserted data into {table_name}: {data['name']}')
+    except Exception as e:
+        raise Exception(f'Failed to insert into {table_name} data - {data}, error {e}')
+    
+def get_records_from_table(table_name: str, filters: dict = None):
+    try:
+        query = supabase.table(table_name)
+        if filters:
+            for key, value in filters.items():
+                query = query.eq(key, value)
+        response = query.select("*").execute()
+        return response.data
+    except Exception as e:
+        raise Exception(f'Failed to get records from {table_name}, error {e}')
